@@ -26,8 +26,10 @@ jobs:
       - run: python -m pytest -q
       - run: python scripts/build.py
       - run: python scripts/smoke_bundle.py
+      - run: python scripts/package.py
       - name: Upload native app
         uses: actions/upload-artifact@v4
         with:
           name: FanFicFare-Desktop-${{ runner.os }}
-          path: dist/
+          path: dist/artifacts/*
+          if-no-files-found: error

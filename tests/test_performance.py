@@ -71,6 +71,27 @@ def test_site_pacing_reservations_are_shared_and_sites_independent(tmp_path):
     assert sleeps == [2, 4]  # A faster job cannot erase an existing delay.
 
 
+def test_pacing_database_handles_close_before_folder_cleanup(tmp_path, monkeypatch):
+    import sqlite3
+    from fanficfare_gui import network
+    original = sqlite3.connect
+    connections = []
+    def connect(*args, **kwargs):
+        connection = original(*args, **kwargs)
+        connections.append(connection)
+        return connection
+    monkeypatch.setattr(network.sqlite3, "connect", connect)
+    path = tmp_path / "pacing.sqlite"
+    initialize_pacing(str(path))
+    SitePacer(str(path), clock=lambda: 100, sleep=lambda delay: None).wait("same.example", 3, lambda event: None)
+    for connection in connections:
+        with pytest.raises(sqlite3.ProgrammingError, match="closed"):
+            connection.execute("SELECT 1")
+    # Windows forbids deleting a SQLite file while a connection is open.
+    path.unlink()
+    assert not path.exists()
+
+
 def test_simultaneous_pacing_reservations_do_not_collide(tmp_path):
     path = str(tmp_path / "pacing.sqlite")
     initialize_pacing(path)

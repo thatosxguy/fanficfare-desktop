@@ -79,6 +79,7 @@ Select an active row and click **Cancel selected** to stop that job and remove i
 python -m pytest -q
 python scripts/build.py
 python scripts/smoke_bundle.py
+python scripts/package.py
 python scripts/benchmark.py
 ```
 
@@ -86,7 +87,9 @@ Use the virtual environment's Python for these commands. On headless Linux, set 
 
 The benchmark measures local word counting on synthetic chapter text; it does not measure live website download speed. See [performance verification](docs/performance.md) for the measured result and test scope.
 
-PyInstaller builds a native app in `dist/`. Build on each target OS; it does not cross-compile. [GitHub Actions](https://github.com/thatosxguy/fanficfare-desktop/actions/workflows/check.yml) runs tests and builds on macOS, Windows, and Linux. Successful runs upload native apps as workflow artifacts, available from the run's page when signed into GitHub. Download the artifact for your OS and extract it before opening the app. Local macOS verification does not establish Windows or Linux compatibility. Distribution signing, notarization, and installers are separate release steps.
+PyInstaller builds a native app in `dist/`. Build on each target OS; it does not cross-compile. The packaging script creates a ZIP for macOS/Windows or a TAR.GZ for Linux under `dist/artifacts/`. macOS and Linux archives preserve executable permissions and symlinks.
+
+[GitHub Actions](https://github.com/thatosxguy/fanficfare-desktop/actions/workflows/check.yml) runs tests and builds on macOS, Windows, and Linux. Successful runs upload native app archives as workflow artifacts, available from the run's page when signed into GitHub. Download the artifact for your OS, extract the outer artifact ZIP, then extract the app archive inside it before opening the app. Local macOS verification does not establish Windows or Linux compatibility. Distribution signing, notarization, and installers are separate release steps.
 
 ## License
 

@@ -2,11 +2,12 @@
 
 import sqlite3
 import time
+from contextlib import closing
 from urllib.parse import urlparse
 
 
 def initialize_pacing(path):
-    with sqlite3.connect(path, timeout=30) as database:
+    with closing(sqlite3.connect(path, timeout=30)) as database, database:
         database.execute("CREATE TABLE IF NOT EXISTS pacing (site TEXT PRIMARY KEY, next REAL, interval REAL)")
 
 
@@ -19,7 +20,7 @@ class SitePacer:
     def wait(self, site, interval, emit):
         # Reserve before sleeping, releasing the database lock immediately.
         # Only host names and monotonic timestamps enter this temporary file.
-        with sqlite3.connect(self.path, timeout=30) as database:
+        with closing(sqlite3.connect(self.path, timeout=30)) as database, database:
             database.execute("BEGIN IMMEDIATE")
             row = database.execute("SELECT next, interval FROM pacing WHERE site=?", (site,)).fetchone()
             now = self.clock()
