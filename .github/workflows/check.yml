@@ -1,0 +1,33 @@
+name: Desktop checks and builds
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  desktop:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Qt runtime dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libegl1 libopengl0 libxkbcommon0
+      - run: python -m pip install ".[dev]"
+      - run: python -m pytest -q
+      - run: python scripts/build.py
+      - run: python scripts/smoke_bundle.py
+      - name: Upload native app
+        uses: actions/upload-artifact@v4
+        with:
+          name: FanFicFare-Desktop-${{ runner.os }}
+          path: dist/

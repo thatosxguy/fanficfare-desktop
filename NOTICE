@@ -1,0 +1,13 @@
+FanFicFare Desktop
+Copyright 2026 thatosxguy and contributors.
+
+This desktop interface is licensed under the Apache License, Version 2.0.
+See LICENSE for the license terms.
+
+FanFicFare Desktop uses the separately maintained FanFicFare engine and
+PySide6. Their licenses and notices remain applicable to those dependencies.
+This is an independent desktop interface, not an official FanFicFare release.
+
+IBM Plex Sans is bundled under the SIL Open Font License, Version 1.1.
+Its copyright and license notice is included in
+src/fanficfare_gui/assets/IBM-PLEX-LICENSE.txt.

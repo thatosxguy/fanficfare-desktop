@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fanficfare-desktop"
+version = "0.2.0"
+description = "A standalone desktop GUI for FanFicFare"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+requires-python = ">=3.10"
+dependencies = ["PySide6>=6.8,<7", "FanFicFare[image_processing]>=4.59,<5"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-qt>=4", "pyinstaller>=6"]
+
+[project.urls]
+Homepage = "https://github.com/thatosxguy/fanficfare-desktop"
+Issues = "https://github.com/thatosxguy/fanficfare-desktop/issues"
+
+[project.gui-scripts]
+fanficfare-desktop = "fanficfare_gui.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+fanficfare_gui = ["assets/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+qt_api = "pyside6"
