@@ -6,6 +6,16 @@ A standalone desktop interface for [JimmXinu/FanFicFare](https://github.com/Jimm
 
 ![Desktop interface](docs/desktop-empty.png)
 
+## Download
+
+Get the packaged app from [GitHub Releases](https://github.com/thatosxguy/fanficfare-desktop/releases/latest). Python is included; no separate Python installation is needed.
+
+- **macOS (Apple Silicon):** extract the ZIP and move `FanFicFare Desktop.app` to Applications.
+- **Windows (x86-64):** extract the ZIP and open `FanFicFare Desktop.exe` inside the application folder.
+- **Linux (x86-64):** extract the TAR.GZ and run `./FanFicFare\ Desktop` inside the application folder. The release is tested on Ubuntu 24.04.
+
+Keep the extracted application folder intact, including `_internal` on Windows and Linux. These are portable archives, not installers. Builds are not signed for distribution or notarized; the operating system may display a security prompt. Each release includes SHA-256 checksums and a companion archive of dependency notices and source references. An Intel Mac package is not currently available.
+
 ## Features
 
 - Paste multiple story URLs or import a UTF-8 text file, one URL per line.
@@ -89,7 +99,7 @@ The benchmark measures local word counting on synthetic chapter text; it does no
 
 PyInstaller builds a native app in `dist/`. Build on each target OS; it does not cross-compile. The packaging script creates a ZIP for macOS/Windows or a TAR.GZ for Linux under `dist/artifacts/`. macOS and Linux archives preserve executable permissions and symlinks.
 
-[GitHub Actions](https://github.com/thatosxguy/fanficfare-desktop/actions/workflows/check.yml) runs tests and builds on macOS, Windows, and Linux. Successful runs upload native app archives as workflow artifacts, available from the run's page when signed into GitHub. Download the artifact for your OS, extract the outer artifact ZIP, then extract the app archive inside it before opening the app. Local macOS verification does not establish Windows or Linux compatibility. Distribution signing, notarization, and installers are separate release steps.
+[GitHub Actions](https://github.com/thatosxguy/fanficfare-desktop/actions/workflows/check.yml) runs tests, native builds, and packaged-app smoke checks on macOS, Windows, and Linux. Successful runs upload native app archives as workflow artifacts, available from the run's page when signed into GitHub. Development artifacts have an outer ZIP that must also be extracted. Public release packages are available directly from [GitHub Releases](https://github.com/thatosxguy/fanficfare-desktop/releases/latest). Distribution signing, notarization, and installers are not included in the current release.
 
 ## License
 
